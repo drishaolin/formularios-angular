@@ -26,5 +26,10 @@
     <div class="txt-error" *ngIf="!email.valid && email.touched">
         {{usuarioAuxiliarMsg.email}}
     </div>
-    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    <button type="submit" class="btn mt-3" 
+    [class.btn-secondary]="!f.valid"
+    [class.btn-primary]="f.valid"
+    [disabled]="!f.valid">
+        Submit
+    </button>
 </form>
