@@ -10,11 +10,18 @@ export class TemplateFormComponent implements OnInit {
 
   usuario: any = {
     nome: '',
-    email: ''
+    email: '',
+    
   }
   usuarioAuxiliarMsg: any = {
     nome: 'Nome é obrigatório!',
-    email: 'Email inválido!'
+    email: 'Email inválido!',
+    cep: 'CEP inválido!',
+    rua: 'Rua é obrigatório!',
+    numero: 'Número é obrigatório!',
+    bairro: 'Bairro é obrigatório!',
+    cidade: 'Cidade é obrigatório!',
+    estado: 'Estado é obrigatório!',
   }
 
   onSubmit(form: NgForm) {
@@ -22,6 +29,11 @@ export class TemplateFormComponent implements OnInit {
     //console.log(this.usuario);
     
   }
+
+  mostraCampoInvalido (campo: any) {
+    return !campo.valid && campo.touched;
+  }
+
 
   constructor() { }
 
