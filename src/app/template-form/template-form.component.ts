@@ -31,8 +31,11 @@ export class TemplateFormComponent implements OnInit {
   }
 
   onSubmit(formulario: NgForm) {
-    console.log(formulario);
-    //console.log(this.usuario);
+    //console.log(formulario);
+
+    this.http.post('https://httpbin.org/post', JSON.stringify(formulario.value))
+    .subscribe(dados => console.log)
+    
     
   }
 
