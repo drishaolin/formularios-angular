@@ -1,0 +1,7 @@
+.has-error {
+    border: 1px solid firebrick;
+    border-radius: 5px;
+}
+.txt-error {
+    color: firebrick;
+}

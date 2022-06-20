@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
+import { BinaryOperatorExpr, compileComponentFromMetadata } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-data-form',
@@ -10,6 +11,19 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 export class DataFormComponent implements OnInit {
 
   formulario: FormGroup;
+
+  usuarioAuxiliarMsg: any = {
+    nome: 'Nome é obrigatório!',
+    email: 'Email é obrigatório!',
+    emailInvalido: 'Email inválido!',
+    cep: 'CEP é obrigatório!',
+    cepInvalido: 'CEP inválido!',
+    rua: 'Rua é obrigatório!',
+    numero: 'Número é obrigatório!',
+    bairro: 'Bairro é obrigatório!',
+    cidade: 'Cidade é obrigatório!',
+    estado: 'Estado é obrigatório!',
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,8 +38,15 @@ export class DataFormComponent implements OnInit {
     // });
 
     this.formulario = this.formBuilder.group({
-      nome: [null],
-      email: [null]
+      nome: [null, Validators.required],
+      email: [null, [Validators.required, Validators.email]],
+      cep: [null, Validators.required],
+      numero: [null, Validators.required],
+      complemento: [null],
+      rua: [null, Validators.required],
+      bairro: [null, Validators.required],
+      cidade: [null, Validators.required],
+      estado: [null, Validators.required]
     })
   }
 
@@ -44,6 +65,21 @@ export class DataFormComponent implements OnInit {
 
   limparFormulario() {
     this.formulario.reset();
+  }
+
+  mostraCampoInvalido (campo: string): boolean {
+    //ambas sintaxes são corretas:
+    // return !this.formulario.controls[campo].valid 
+    // && this.formulario.controls[campo].touched;
+    return !this.formulario.get(campo)!.valid 
+    && this.formulario.get(campo)!.touched;
+  }
+  verificaEmailInvalido() {
+    //retorna true caso exista erro no email e ele foi tocado
+    let campoEmail = this.formulario.controls['email'];
+    if(campoEmail.errors) {
+      return campoEmail.errors['email'] && campoEmail.touched;
+    }
   }
 
 }
