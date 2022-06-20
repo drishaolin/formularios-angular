@@ -36,21 +36,21 @@
         </div>
     </div>
 
-    <div>
+    <div formGroupName="endereco">
         <div class="row">
             <!-- CAMPO CEP -->
             <div class="col-md-3">
                 <div class="mt-3">
                     <label for="cep" class="form-label"
-                    [class.txt-error]="mostraCampoInvalido('cep')">
+                    [class.txt-error]="mostraCampoInvalido('endereco.cep')">
                     CEP
                     </label>
                     <input type="text" class="form-control" formControlName="cep"
-                    [class.has-error]="mostraCampoInvalido('cep')"
+                    [class.has-error]="mostraCampoInvalido('endereco.cep')"
                     id="cep" placeholder="00000-000" >
                     <!-- (blur)="consultaCEP($event.target, f)"> -->
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('cep')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.cep')">
                     {{usuarioAuxiliarMsg.cep}}
                 </div>
             </div>
@@ -59,14 +59,14 @@
             <div class="col-md-3">
                 <div class="mt-3">
                     <label for="numero" class="form-label" 
-                    [class.txt-error]="mostraCampoInvalido('numero')">
+                    [class.txt-error]="mostraCampoInvalido('endereco.numero')">
                     Número
                     </label>
                     <input type="text" class="form-control" formControlName="numero"
-                    [class.has-error]="mostraCampoInvalido('numero')"
+                    [class.has-error]="mostraCampoInvalido('endereco.numero')"
                     id="numero" placeholder="insira o número">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('numero')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.numero')">
                     {{usuarioAuxiliarMsg.numero}}
                 </div>
             </div>
@@ -88,13 +88,13 @@
             <div class="col-md-12">
                 <div class="mt-3">
                     <label for="rua" class="form-label"
-                    [class.txt-error]="mostraCampoInvalido('rua')" >
+                    [class.txt-error]="mostraCampoInvalido('endereco.rua')" >
                     Rua
                 </label>
                     <input type="text" class="form-control" id="rua" formControlName="rua"
-                    [class.has-error]="mostraCampoInvalido('rua')">
+                    [class.has-error]="mostraCampoInvalido('endereco.rua')">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('rua')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.rua')">
                     {{usuarioAuxiliarMsg.rua}}
                 </div>
             </div>
@@ -105,13 +105,13 @@
                 <!-- CAMPO BAIRRO -->
                 <div class="mt-3">
                     <label for="bairro" class="form-label"
-                    [class.txt-error]="mostraCampoInvalido('bairro')">
+                    [class.txt-error]="mostraCampoInvalido('endereco.bairro')">
                     Bairro
                     </label>
                     <input type="text" class="form-control" id="bairro" formControlName="bairro"
-                    [class.has-error]="mostraCampoInvalido('bairro')">
+                    [class.has-error]="mostraCampoInvalido('endereco.bairro')">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('bairro')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.bairro')">
                     {{usuarioAuxiliarMsg.bairro}}
                 </div>
             </div>
@@ -120,13 +120,13 @@
             <div class="col-md-5">
                 <div class="mt-3">
                     <label for="cidade" class="form-label"
-                    [class.txt-error]="mostraCampoInvalido('cidade')">
+                    [class.txt-error]="mostraCampoInvalido('endereco.cidade')">
                     Cidade
                 </label>
                     <input type="text" class="form-control" id="cidade" formControlName="cidade"
-                    [class.has-error]="mostraCampoInvalido('cidade')">
+                    [class.has-error]="mostraCampoInvalido('endereco.cidade')">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('cidade')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.cidade')">
                     {{usuarioAuxiliarMsg.cidade}}
                 </div>
             </div>
@@ -135,13 +135,13 @@
             <div class="col-md-2">
                 <div class="mt-3">
                     <label for="estado" class="form-label"
-                    [class.txt-error]="!formulario.controls['estado'].valid && formulario.controls['estado'].touched">
+                    [class.txt-error]="!formulario.get('endereco.estado')!.valid && formulario.get('endereco.estado')!.touched">
                     Estado
                     </label>
                     <input type="text" class="form-control" id="estado" formControlName="estado"
-                    [class.has-error]="mostraCampoInvalido('estado')">
+                    [class.has-error]="mostraCampoInvalido('endereco.estado')">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('estado')">
+                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.estado')">
                     {{usuarioAuxiliarMsg.estado}}
                 </div>
             </div>
