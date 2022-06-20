@@ -46,7 +46,7 @@ export class DataFormComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       
       endereco: this.formBuilder.group({
-        cep: [null, Validators.required],
+        cep: [null, [Validators.required, Validators.pattern("^[0-9]{5}-?[0-9]{3}$"), Validators.minLength(8), Validators.maxLength(9)]],
         numero: [null, Validators.required],
         complemento: [null],
         rua: [null, Validators.required],
@@ -60,20 +60,28 @@ export class DataFormComponent implements OnInit {
   onSubmit() {
     console.log(this.formulario.value);
 
-    this.http.post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
-    .subscribe(dados => {
-      console.log(dados);
-      //this.formulario.reset();
-      this.limparFormulario();
-    },
-    (error: any) => alert('erro!'));
-    
+    if(this.formulario.valid) {
+      this.http.post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
+      .subscribe(dados => {
+        console.log(dados);
+        //this.formulario.reset();
+        this.limparFormulario();
+      },
+      (error: any) => alert('erro!'));
+      console.log('%c Formulário enviado!!','color:white; background-color:green');
+    } else {
+      console.error('form invalido');
+      this.verificaValidacoesForm(this.formulario);
+
+      
+    }
   }
 
   limparFormulario() {
     this.formulario.reset();
   }
 
+  //------------------- MÉTODOS DE VALIDAÇÃO: --------------------
   mostraCampoInvalido (campo: string): boolean {
     //ambas sintaxes são corretas:
     // return !this.formulario.controls[campo].valid 
@@ -88,7 +96,20 @@ export class DataFormComponent implements OnInit {
       return campoEmail.errors['email'] && campoEmail.touched;
     }
   }
+  verificaValidacoesForm(formGroup: FormGroup) {
+    Object.keys(formGroup.controls).forEach(campo => {
+      console.log(campo);
+      const controle = formGroup.controls[campo];
+      controle.markAsTouched();
+      //para verificar validações em itens aninhados:
+      if(controle instanceof FormGroup) {
+        this.verificaValidacoesForm(controle);
+      }
+      
+    })
+  }
 
+  //-------------- MÉTODOS PARA CONSULTA CEP -------------
   consultaCEP() {
     let cep = this.formulario.get('endereco.cep')!.value;
 
