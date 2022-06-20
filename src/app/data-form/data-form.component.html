@@ -47,8 +47,8 @@
                     </label>
                     <input type="text" class="form-control" formControlName="cep"
                     [class.has-error]="mostraCampoInvalido('endereco.cep')"
-                    id="cep" placeholder="00000-000" >
-                    <!-- (blur)="consultaCEP($event.target, f)"> -->
+                    id="cep" placeholder="00000-000"
+                    (blur)="consultaCEP()">
                 </div>
                 <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.cep')">
                     {{usuarioAuxiliarMsg.cep}}
@@ -149,7 +149,10 @@
     </div>
 
     <div class="d-flex">
-        <button type="submit" class="btn mt-3">
+        <button type="submit" class="btn mt-3"
+        [class.btn-outline-primary]="!formulario.valid"
+        [class.btn-primary]="formulario.valid"
+        [disabled]="!formulario.valid">
             Submit
         </button>
         <button type="button" class="btn btn-warning mt-3 ms-2" (click)="limparFormulario()">
