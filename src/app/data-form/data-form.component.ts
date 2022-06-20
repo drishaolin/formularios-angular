@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { BinaryOperatorExpr, compileComponentFromMetadata } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { IEstadosBr } from '../models/estados-br';
+import { DropdownService } from '../services/dropdown.service';
 
 @Component({
   selector: 'app-data-form',
@@ -11,6 +13,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 export class DataFormComponent implements OnInit {
 
   formulario: FormGroup;
+  estados: IEstadosBr[];
 
   usuarioAuxiliarMsg: any = {
     nome: 'Nome é obrigatório!',
@@ -27,10 +30,18 @@ export class DataFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private dropdownService: DropdownService
     ) { }
 
   ngOnInit(): void {
+
+    this.dropdownService.getestadosBr()
+    .subscribe(dados => {
+      this.estados = dados;
+      console.log(dados);
+    });
+
     //As duas maneiras de escrever fazem a mesma coisa:
     // this.formulario = new FormGroup({
     //   nome: new FormControl(null),
