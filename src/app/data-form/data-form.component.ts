@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { IEstadosBr } from '../models/estados-br';
 import { ConsultaCepService } from '../services/consulta-cep.service';
 import { DropdownService } from '../services/dropdown.service';
+import { FormValidations } from '../validations/form-validations';
 
 @Component({
   selector: 'app-data-form',
@@ -41,7 +42,6 @@ export class DataFormComponent implements OnInit {
     this.dropdownService.getestadosBr()
     .subscribe(dados => {
       this.estados = dados;
-      console.log(dados);
     });
 
     //As duas maneiras de escrever fazem a mesma coisa:
@@ -59,7 +59,7 @@ export class DataFormComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       
       endereco: this.formBuilder.group({
-        cep: [null, [Validators.required, Validators.pattern("^[0-9]{5}-?[0-9]{3}$"), Validators.minLength(8), Validators.maxLength(9)]],
+        cep: [null, [Validators.required, FormValidations.cepValidator, Validators.pattern("^[0-9]{5}-?[0-9]{3}$"), Validators.minLength(8), Validators.maxLength(9)]],
         numero: [null, Validators.required],
         complemento: [null],
         rua: [null, Validators.required],
@@ -68,11 +68,11 @@ export class DataFormComponent implements OnInit {
         estado: [null, Validators.required]
       })
     })
+    console.log(this.formulario);
   }
 
   onSubmit() {
     console.log(this.formulario.value);
-
     if(this.formulario.valid) {
       this.http.post('https://httpbin.org/post', JSON.stringify(this.formulario.value))
       .subscribe(dados => {
@@ -102,6 +102,12 @@ export class DataFormComponent implements OnInit {
     return !this.formulario.get(campo)!.valid 
     && this.formulario.get(campo)!.touched;
   }
+  verificaRequired(campo: string) {
+    return (
+      this.formulario.get(campo)!.hasError('required') &&
+      (this.formulario.get(campo)!.touched || this.formulario.get(campo)!.dirty)
+    );
+  }
   verificaEmailInvalido() {
     //retorna true caso exista erro no email e ele foi tocado
     let campoEmail = this.formulario.controls['email'];
@@ -125,7 +131,6 @@ export class DataFormComponent implements OnInit {
   //-------------- MÉTODOS PARA CONSULTA CEP -------------
   consultaCEP() {
     const cep = this.formulario.get('endereco.cep')?.value;
-    console.log("CEP:", cep);
     if(cep!= null && cep!== '') {
       this.cepService.consultaCEP(cep)!
       .subscribe(dados => this.populaEnderecoForm(dados))

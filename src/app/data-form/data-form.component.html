@@ -50,8 +50,13 @@
                     id="cep" placeholder="00000-000"
                     (blur)="consultaCEP()">
                 </div>
-                <div class="txt-error form-text" *ngIf="mostraCampoInvalido('endereco.cep')">
+                <div class="txt-error form-text" *ngIf="verificaRequired('endereco.cep')">
                     {{usuarioAuxiliarMsg.cep}}
+                </div>
+                <div class="txt-error form-text" 
+                *ngIf="this.formulario.get('endereco.cep')!.touched 
+                && formulario.get('endereco.cep')?.hasError('cepInvalido')">
+                    {{usuarioAuxiliarMsg.cepInvalido}}
                 </div>
             </div>
 
