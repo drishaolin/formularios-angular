@@ -20,6 +20,7 @@ export class DataFormComponent implements OnInit {
   usuarioAuxiliarMsg: any = {
     nome: 'Nome é obrigatório!',
     email: 'Email é obrigatório!',
+    confirmarEmail: 'Emails não são iguais!',
     emailInvalido: 'Email inválido!',
     cep: 'CEP é obrigatório!',
     cepInvalido: 'CEP inválido!',
@@ -57,6 +58,7 @@ export class DataFormComponent implements OnInit {
     this.formulario = this.formBuilder.group({
       nome: [null, Validators.required],
       email: [null, [Validators.required, Validators.email]],
+      confirmarEmail: [null, [Validators.required, Validators.email, FormValidations.equalsTo('email')]],
       
       endereco: this.formBuilder.group({
         cep: [null, [Validators.required, FormValidations.cepValidator, Validators.pattern("^[0-9]{5}-?[0-9]{3}$"), Validators.minLength(8), Validators.maxLength(9)]],
