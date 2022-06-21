@@ -3,6 +3,7 @@ import { BinaryOperatorExpr, compileComponentFromMetadata } from '@angular/compi
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IEstadosBr } from '../models/estados-br';
+import { ConsultaCepService } from '../services/consulta-cep.service';
 import { DropdownService } from '../services/dropdown.service';
 
 @Component({
@@ -31,7 +32,8 @@ export class DataFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private dropdownService: DropdownService
+    private dropdownService: DropdownService,
+    private cepService: ConsultaCepService
     ) { }
 
   ngOnInit(): void {
@@ -122,23 +124,14 @@ export class DataFormComponent implements OnInit {
 
   //-------------- MÉTODOS PARA CONSULTA CEP -------------
   consultaCEP() {
-    let cep = this.formulario.get('endereco.cep')!.value;
-
-    //Nova variável "cep" somente com dígitos.
-    cep = cep.replace(/\D/g, '');
-     
-    //Verifica se campo cep possui valor informado.
-    if (cep != "") {
-      //Expressão regular para validar o CEP.
-      var validacep = /^[0-9]{8}$/;
- 
-      //Valida o formato do CEP.
-      if(validacep.test(cep)){
-       this.http.get(`https://viacep.com.br/ws/${cep}/json`)
-       .subscribe(dados => this.populaEnderecoForm(dados));
+    const cep = this.formulario.get('endereco.cep')?.value;
+    console.log("CEP:", cep);
+    if(cep!= null && cep!== '') {
+      this.cepService.consultaCEP(cep)!
+      .subscribe(dados => this.populaEnderecoForm(dados))
       }
     }
-   }
+   
    populaEnderecoForm(dados:any) {
     //com setValue precisamos modificar todos os atributos, 
     //com patchValue, podemos alterar somente os que nos interessem
